@@ -56,10 +56,10 @@ RM = "C:\Program Files\JetBrains\CLion 2021.2.2\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Ofri\CLionProjects\project
+CMAKE_SOURCE_DIR = C:\Users\Ofri\CLionProjects\ex1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Ofri\CLionProjects\project\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -86,9 +86,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\project\cmake-build-debug\CMakeFiles C:\Users\Ofri\CLionProjects\project\cmake-build-debug\\CMakeFiles\progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug\CMakeFiles C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug\\CMakeFiles\progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\project\cmake-build-debug\CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug\CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -116,41 +116,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named project
+# Target rules for targets named ex1
 
 # Build rule for target.
-project: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 project
-.PHONY : project
+ex1: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 ex1
+.PHONY : ex1
 
 # fast build rule for target.
-project/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/build
-.PHONY : project/fast
+ex1/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/build
+.PHONY : ex1/fast
 
-main.obj: main.cpp.obj
-.PHONY : main.obj
+anomaly_detection_util.obj: anomaly_detection_util.cpp.obj
+.PHONY : anomaly_detection_util.obj
 
 # target to build an object file
-main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/main.cpp.obj
-.PHONY : main.cpp.obj
+anomaly_detection_util.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/anomaly_detection_util.cpp.obj
+.PHONY : anomaly_detection_util.cpp.obj
 
-main.i: main.cpp.i
-.PHONY : main.i
+anomaly_detection_util.i: anomaly_detection_util.cpp.i
+.PHONY : anomaly_detection_util.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/main.cpp.i
-.PHONY : main.cpp.i
+anomaly_detection_util.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/anomaly_detection_util.cpp.i
+.PHONY : anomaly_detection_util.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+anomaly_detection_util.s: anomaly_detection_util.cpp.s
+.PHONY : anomaly_detection_util.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/main.cpp.s
-.PHONY : main.cpp.s
+anomaly_detection_util.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/anomaly_detection_util.cpp.s
+.PHONY : anomaly_detection_util.cpp.s
 
 # Help Target
 help:
@@ -160,10 +160,10 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
-	@echo ... project
-	@echo ... main.obj
-	@echo ... main.i
-	@echo ... main.s
+	@echo ... ex1
+	@echo ... anomaly_detection_util.obj
+	@echo ... anomaly_detection_util.i
+	@echo ... anomaly_detection_util.s
 .PHONY : help
 
 

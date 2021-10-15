@@ -1,9 +1,10 @@
 //
-// Created by Ofri on 10/15/2021.
+// Created by Ofri on 10/14/2021.
 //
 
-#ifndef INC_89210_PROJECT_ANOMALY_DETECTION_UTIL_H
-#define INC_89210_PROJECT_ANOMALY_DETECTION_UTIL_H
+#ifndef EX1_ANOMALY_DETECTION_UTIL_H
+#define EX1_ANOMALY_DETECTION_UTIL_H
+
 // returns the variance of X and Y
 float var(float* x, int size);
 // returns the covariance of X and Y
@@ -22,7 +23,7 @@ public:
 class Point{
 public:
     float x,y;
-    Point(float x, float y):x(x),y(y){}
+    Point(float x, float y):x(x),y(x){}
 };
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size);
@@ -31,4 +32,4 @@ float dev(Point p,Point** points, int size);
 // returns the deviation between point p and the line
 float dev(Point p,Line l);
 
-#endif //INC_89210_PROJECT_ANOMALY_DETECTION_UTIL_H
+#endif //EX1_ANOMALY_DETECTION_UTIL_H

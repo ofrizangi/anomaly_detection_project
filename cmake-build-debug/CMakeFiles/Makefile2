@@ -53,16 +53,16 @@ RM = "C:\Program Files\JetBrains\CLion 2021.2.2\bin\cmake\win\bin\cmake.exe" -E 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:\Users\Ofri\CLionProjects\project
+CMAKE_SOURCE_DIR = C:\Users\Ofri\CLionProjects\ex1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:\Users\Ofri\CLionProjects\project\cmake-build-debug
+CMAKE_BINARY_DIR = C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/project.dir/all
+all: CMakeFiles/ex1.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -70,34 +70,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/project.dir/clean
+clean: CMakeFiles/ex1.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/project.dir
+# Target rules for target CMakeFiles/ex1.dir
 
 # All Build rule for target.
-CMakeFiles/project.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Ofri\CLionProjects\project\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target project"
-.PHONY : CMakeFiles/project.dir/all
+CMakeFiles/ex1.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug\CMakeFiles --progress-num=1,2 "Built target ex1"
+.PHONY : CMakeFiles/ex1.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/project.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\project\cmake-build-debug\CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/project.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\project\cmake-build-debug\CMakeFiles 0
-.PHONY : CMakeFiles/project.dir/rule
+CMakeFiles/ex1.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug\CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 CMakeFiles/ex1.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start C:\Users\Ofri\CLionProjects\ex1\cmake-build-debug\CMakeFiles 0
+.PHONY : CMakeFiles/ex1.dir/rule
 
 # Convenience name for target.
-project: CMakeFiles/project.dir/rule
-.PHONY : project
+ex1: CMakeFiles/ex1.dir/rule
+.PHONY : ex1
 
 # clean rule for target.
-CMakeFiles/project.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make CMakeFiles/project.dir/clean
-.PHONY : CMakeFiles/project.dir/clean
+CMakeFiles/ex1.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ex1.dir\build.make CMakeFiles/ex1.dir/clean
+.PHONY : CMakeFiles/ex1.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
