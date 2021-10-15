@@ -1,30 +1,55 @@
-#include <iostream>
 #include "anomaly_detection_util.h"
+#include <iostream>
+
+//this is the source file for anomaly_detection_util library
+//it's the ex1 for 89210 project
+// returns the variance of X and Y
+float var(float *x, int size);
+
+// returns the covariance of X and Y
+float cov(float *x, float *y, int size);
+
+
+// returns the Pearson correlation coefficient of X and Y
+float pearson(float *x, float *y, int size);
+
+
 
 /**
- * Returns the variance of a ......
+ * Calculates the average of an array.
  *
- * @param x a pointer to an array of numbers
- * @param size the size of the array
- * @return the variance ............
+ * @param filename GIF File name to be loaded
+ * @return Inited GIF Handler or NULL for error
  */
-float var(float *x, int size) {
+float avg(float *x, int size) {
     float sum = 0;
     for (int i = 0; i < size; i++) {
         sum = sum + x[i];
     }
-    float u = (1 / (float) size) * sum;
-    sum = 0;
-    for (int i = 0; i < size; i++) {
-        sum = sum + (x[i] - u) * (x[i] - u);
-    }
-    return (1 / (float) size) * sum;
+    return sum / (float) size;
+}
+
+// performs a linear regression and return s the line equation
+Line linear_reg(Point **points, int size) {
+
+}
+
+// returns the deviation between point p and the line equation of the points
+float dev(Point p, Point **points, int size) {
+
+}
+
+// returns the deviation between point p and the line
+float dev(Point p, Line l) {
+
 }
 
 int main() {
+
     float *x;
-    float ar[5] = {1, 2, 3, 4, 5};
-    x = ar;
-    std::cout << var(x, 5) << std::endl;
-    return 0;
-}
+    float t[] = {1, 2, 3, 4, 5};
+    x = t;
+    std::cout << avg(x, 5);
+
+
+}//end of the library
