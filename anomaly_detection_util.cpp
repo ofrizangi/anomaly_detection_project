@@ -33,9 +33,9 @@ float var(float* x, int size) {
     //first some calculation preparations to simplify the formula
     float sum = sumMembers(x, size);
     float squareSum = sumSquares(x, size);
-    float ro = sum / size ;
+    float ro = sum / (float)size ;
     //finally calculate variance using the formula
-    float var = (squareSum / size)  - pow(ro, 2);
+    float var = (squareSum / (float)size)  - pow(ro, 2);
     return var;
 }
 
@@ -63,19 +63,13 @@ float avg(float *x, int size) {
 }
 
 // performs a linear regression and return s the line equation
-Line linear_reg(Point **points, int size) {
-
-}
+Line linear_reg(Point **points, int size) ;
 
 // returns the deviation between point p and the line equation of the points
-float dev(Point p, Point **points, int size) {
-
-}
+float dev(Point p, Point **points, int size) ;
 
 // returns the deviation between point p and the line
-float dev(Point p, Line l) {
-
-}
+float dev(Point p, Line l) ;
 
 int main() {
 
