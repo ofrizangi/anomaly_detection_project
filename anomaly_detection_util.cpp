@@ -1,5 +1,4 @@
 #include "anomaly_detection_util.h"
-#include <iostream>
 #include <cmath>
 
 //this is the source file for anomaly_detection_util library
@@ -36,7 +35,6 @@ float var(float *x, int size) {
     add check for valid size: not 0 or negative etc */
 
     //first some calculation preparations to simplify the formula
-    float sum = sumMembers(x, size);
     float squareSum = sumSquares(x, size);
     float ro = avg(x, size);
     //finally calculate variance using the formula
@@ -58,7 +56,7 @@ float cov(float *x, float *y, int size) {
         sum += (deltaX * deltaY);
     }
     //cov is the sum divided by the population size
-    float cov = (sum / size);
+    float cov = sum / (float)size;
     //return the covariance
     return cov;
 }
@@ -97,23 +95,13 @@ Line linear_reg(Point **points, int size) {
 float dev(Point p, Point **points, int size) {
     Line l = linear_reg(points, size);
     float yLinePoint = l.f(p.x);
-    return fabs(yLinePoint - p.y);
+    return fabsf(yLinePoint - p.y);
 }
 
 // returns the deviation between point p and the line
 float dev(Point p, Line l) {
     float yLinePoint = l.f(p.x);
-    return fabs(yLinePoint - p.y);
+    return fabsf(yLinePoint - p.y);
 }
 
-int main() {
-    float X[] = {2, 4, 6, 8, 10};
-    float Y[] = {12, 11, 8, 3, 1};
-    std::cout << "var X is" << var(X, 5) << "\n"; //8
-    std::cout << "var Y is " << var(Y, 5) << "\n"; //18.8
-    std::cout << "cov X Y is " << cov(X, Y, 5) << "\n"; //-12
-    std::cout << "correlation X Y is " << pearson(X, Y, 5) << "\n"; //-0.9785
 
-
-
-}//end of the library
