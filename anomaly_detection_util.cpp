@@ -65,7 +65,18 @@ float cov(float *x, float *y, int size) {
 
 
 // returns the Pearson correlation coefficient of X and Y
-float pearson(float *x, float *y, int size);
+float pearson(float *x, float *y, int size) {
+    //calculate covariance
+    float covariance = cov(x,y,size);
+    //calculate the deviation using variance
+    float varX = var(x,size);
+    float varY = var(y,size);
+    float deviation = sqrtf((varX*varY));
+    //calculate pearson correlation
+    float correlation = covariance / deviation ;
+    //return the pearson correlation
+    return correlation;
+}
 
 
 
@@ -87,6 +98,8 @@ int main() {
     std :: cout  << "var X is" << var(X,5) << "\n"; //8
     std :: cout << "var Y is " << var(Y,5) << "\n"; //18.8
     std :: cout << "cov X Y is " << cov(X,Y,5) << "\n"; //-12
+    std :: cout << "correlation X Y is " << pearson(X,Y,5) << "\n"; //-0.9785
+
 
 
 }//end of the library
