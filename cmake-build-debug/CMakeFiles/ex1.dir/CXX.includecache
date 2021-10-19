@@ -6,13 +6,11 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/LENOVO/CLionProjects/project/anomaly_detection_util.cpp
-anomaly_detection_util.h
-C:/Users/LENOVO/CLionProjects/project/anomaly_detection_util.h
+/mnt/c/Users/Ofri/CLionProjects/ex1/MainTrain.cpp
 iostream
 -
-cmath
--
+anomaly_detection_util.h
+/mnt/c/Users/Ofri/CLionProjects/ex1/anomaly_detection_util.h
 
-C:/Users/LENOVO/CLionProjects/project/anomaly_detection_util.h
+/mnt/c/Users/Ofri/CLionProjects/ex1/anomaly_detection_util.h
 

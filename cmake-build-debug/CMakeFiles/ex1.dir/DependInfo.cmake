@@ -8,9 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/LENOVO/CLionProjects/project/anomaly_detection_util.cpp" "C:/Users/LENOVO/CLionProjects/project/cmake-build-debug/CMakeFiles/ex1.dir/anomaly_detection_util.cpp.obj"
+  "/mnt/c/Users/Ofri/CLionProjects/ex1/MainTrain.cpp" "/mnt/c/Users/Ofri/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/MainTrain.cpp.o"
+  "/mnt/c/Users/Ofri/CLionProjects/ex1/anomaly_detection_util.cpp" "/mnt/c/Users/Ofri/CLionProjects/ex1/cmake-build-debug/CMakeFiles/ex1.dir/anomaly_detection_util.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "MSVC")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
