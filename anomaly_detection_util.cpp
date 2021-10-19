@@ -9,7 +9,7 @@
 
 #include "anomaly_detection_util.h"
 #include <cmath>
-
+#include <stdexcept>
 
 /**
 * Helper method to calculate the sum of variables.
@@ -55,9 +55,11 @@ float avg(float *x, int size) {
 * @param size the size of the array
 */
 float var(float *x, int size) {
-    /*add check if any of floats in x are negative?
-    add check for valid size: not 0 or negative etc */
-
+    //check if size and x are valid
+    if (size < 1)
+        throw std::invalid_argument("size must be positive");
+    if(x == nullptr )
+        throw std::invalid_argument("null pointer passed");
     //first some calculation preparations to simplify the formula
     float squareSum = sumSquares(x, size);
     float ro = avg(x, size);
@@ -73,6 +75,11 @@ float var(float *x, int size) {
 * @param size the size of the array
 */
 float cov(float *x, float *y, int size) {
+    //check if size and x are valid
+    if (size < 1)
+        throw std::invalid_argument("size must be positive");
+    if(x == nullptr )
+        throw std::invalid_argument("null pointer passed");
     //calculate avg to use later in the loop
     float ruX = avg(x, size);
     float ruY = avg(y, size);
@@ -97,6 +104,11 @@ float cov(float *x, float *y, int size) {
 * @param size the size of the array
 */
 float pearson(float *x, float *y, int size) {
+    //check if size and x are valid
+    if (size < 1)
+        throw std::invalid_argument("size must be positive");
+    if(x == nullptr )
+        throw std::invalid_argument("null pointer passed");
     //calculate covariance
     float covariance = cov(x, y, size);
     //calculate the deviation using variance
@@ -109,13 +121,17 @@ float pearson(float *x, float *y, int size) {
     return correlation;
 }
 
-
 /**
 * performs a linear regression and return the line equation
 * @param points a pointer to an array of points
 * @param size the size of the array
 */
 Line linear_reg(Point **points, int size) {
+    //check if size and points are valid
+    if (size < 1)
+        throw std::invalid_argument("size must be positive");
+    if(points == nullptr )
+        throw std::invalid_argument("null pointer passed");
     float x[size];
     float y[size];
     for (int i = 0; i < size; i++) {
@@ -135,6 +151,11 @@ Line linear_reg(Point **points, int size) {
 * @param size the size of the array
 */
 float dev(Point p, Point **points, int size) {
+    //check if size and points are valid
+    if (size < 1)
+        throw std::invalid_argument("size must be positive");
+    if(points == nullptr )
+        throw std::invalid_argument("null pointer passed");
     Line l = linear_reg(points, size);
     float yLinePoint = l.f(p.x);
     return fabsf(yLinePoint - p.y);
