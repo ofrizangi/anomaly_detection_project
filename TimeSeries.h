@@ -1,0 +1,14 @@
+//
+// Created by Ofri on 11/5/2021.
+//
+
+#ifndef TIMESERIESPROJECT_TIMESERIES_H
+#define TIMESERIESPROJECT_TIMESERIES_H
+
+
+class TimeSeries {
+
+};
+
+
+#endif //TIMESERIESPROJECT_TIMESERIES_H

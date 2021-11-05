@@ -2,7 +2,7 @@
  * @file anomaly_detection_util.cpp
  *
  * @brief this is the source file for anomaly_detection_util library
- * it's the ex1 for 89210 project.
+ * it's the timeSeriesProject for 89210 project.
  *
  * @author Ofri Zangi & Ben Plosk
  */
@@ -58,7 +58,7 @@ float var(float *x, int size) {
     //check if size and x are valid
     if (size < 1)
         throw std::invalid_argument("size must be positive");
-    if(x == nullptr )
+    if (x == nullptr)
         throw std::invalid_argument("null pointer passed");
     //first some calculation preparations to simplify the formula
     float squareSum = sumSquares(x, size);
@@ -78,7 +78,7 @@ float cov(float *x, float *y, int size) {
     //check if size and x are valid
     if (size < 1)
         throw std::invalid_argument("size must be positive");
-    if(x == nullptr )
+    if (x == nullptr)
         throw std::invalid_argument("null pointer passed");
     //calculate avg to use later in the loop
     float ruX = avg(x, size);
@@ -107,7 +107,7 @@ float pearson(float *x, float *y, int size) {
     //check if size and x are valid
     if (size < 1)
         throw std::invalid_argument("size must be positive");
-    if(x == nullptr )
+    if (x == nullptr)
         throw std::invalid_argument("null pointer passed");
     //calculate covariance
     float covariance = cov(x, y, size);
@@ -130,7 +130,7 @@ Line linear_reg(Point **points, int size) {
     //check if size and points are valid
     if (size < 1)
         throw std::invalid_argument("size must be positive");
-    if(points == nullptr )
+    if (points == nullptr)
         throw std::invalid_argument("null pointer passed");
     float x[size];
     float y[size];
@@ -154,7 +154,7 @@ float dev(Point p, Point **points, int size) {
     //check if size and points are valid
     if (size < 1)
         throw std::invalid_argument("size must be positive");
-    if(points == nullptr )
+    if (points == nullptr)
         throw std::invalid_argument("null pointer passed");
     Line l = linear_reg(points, size);
     float yLinePoint = l.f(p.x);
