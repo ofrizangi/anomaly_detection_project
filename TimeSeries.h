@@ -9,13 +9,8 @@ using namespace std;
 
 class TimeSeries {
 public:
-    map<string, vector<float>> table;
-public:
-    TimeSeries(string s);
+    TimeSeries(string fileName);
+
 };
-
-//std::vector <std::string> splitBy(std::string s, char tav);
-
-
 
 #endif
