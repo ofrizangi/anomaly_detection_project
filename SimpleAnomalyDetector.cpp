@@ -1,32 +1,82 @@
-
+#include "TimeSeries.cpp"
+#include "anomaly_detection_util.h"
+#include "SimpleAnomalyDetector.h"
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
 public:
-    SimpleAnomalyDetector() {};
+    vector<correlatedFeatures> normalModel;
+
+    SimpleAnomalyDetector(): this.normalModel = new vector<correlatedFeatures>() {};
     virtual ~SimpleAnomalyDetector();
     virtual void learnNormal(const TimeSeries& ts){
+        //get number of features
+        vector<string> keys = ts.getAllKeys();
+        int n = keys.size();
         //for i = 1 to number of features
-        //m = 0 , col = -1
-        //inner loop for i+1 to n
-        //if pearson feature i and feature j > m
-        //then m = pearson and col = j meaning we found a new max correlation
-        //finished with inner loop
-        //if col != -1 then we found a correlation between feature i and feature j
-        //still need to decide how to calculate threshold
-        //save them in the struct(use pearson and linear_reg) if they proceed the threshold
-        //add them all to vector<correlated features>
-        //continue with outer i loop to find all correlated features and add to the vector
+        for(int i =0; i<n;i++) {
+            //init m = 0 , col = -1
+            float maxCorrelation = 0;
+            int column = -1;
+            //inner loop for i+1 to n
+            for(int j=i+1;j<n;j++) {
+                //calculate pearson between features i and j
+                vector<float> featureIValues = ts.table.find(keys[i]);
+                vector<float> featureJValues = ts.table.find(keys[j]);
+                int sampleSize = featureIValues.size();
+                float pearson = pearson(featureIValues,featureJValues,sampleSize);
+                //if pearson feature i and feature j > m
+                if(maxCorrelation<pearson) {
+                    //then m = pearson and col = j meaning we found a new max correlation
+                    maxCorrelation = pearson;
+                    column = j;
+                }
+            }  //finished with inner loop
+            //if col != -1 then we found a correlation between feature i and feature j
+            if(column != -1) {
+                //still need to decide how to calculate threshold!!(wait for answer in forum)
+                //save them in the struct(use pearson and linear_reg) if they proceed the threshold
+                correlatedFeatures correlation;
+                //get the info for the struct
+                correlation.feature1 = keys[i];
+                correlation.feature2 = keys[column];
+                correlation.correlation = maxCorrelation;
+                //to get linear reg we need to calculate the points and size
+                //size:
+                int sampleSize = ts.table.find(keys[i]).size();
+                //points:
+                //get the float vectors to make the points from
+                vector<float> feature1Values = ts.table.find(keys[i]);
+                vector<float> feature2Values = ts.table.find(keys[column]);
+                //make array of points
+                Point points[sampleSize];
+                //create points and put them in the array
+                for(int k=0;k<sampleSize;k++) {
+                    point p = new Point(feature1Values[k],feature2Values[k]);
+                    points[k]=p;
+                }
+                //calculate linear_reg with the points and size
+                correlation.lin_reg = linear_reg(points,sampleSize);
+                //find threshold:
+                //init max threshold to 0
+                float maxDev = 0;
+                //calculate deviation for every point from the linear_reg line and save the biggest deviation
+                for(Point p: points) {
+                    float dev = dev(p,correlation.lin_reg);
+                    if(maxDev < dev)
+                        maxdev = dev;
+                }
+                //max_dev *=1.1 for precision
+                correlation.threshold = maxDev*1.1;
+                this.normalModel.push_back(correlation);
+            }
+        }//continue with outer i loop to find all correlated features and add to the vector
 
-        //now we have a vector with the pairs.
-        //for each pair make a list of 2-D points (for each loop)
-        //for each point, check the deviation from the linear reg line and save as max_dev
-        //max_dev *=1.1 for precision
-        //save for each pair of correlated features the max_dev(map?threshold?)
-        //now that we have the vector of correlated pairs and their max allowed div we are ready for detect
+        //now that we have the vector of correlated pairs and their max allowed deviation calculated
+        // we are ready for detect
+    } // end of learNormal method
 
-    }
     virtual vector<AnomalyReport> detect(const TimeSeries& ts) {
         //create an empty vector of anomaly report to return in the end
-        //for each line/timestep in the time series
+        //for each line/timestamp in the time series
         //for each pair of correlated features from learn normal(we need to save the vector,maybe as instance var?)
         //take the data for feature 1 and feature 2 and make a point
         //calculate the dev of the point from the linear_reg line of the pair(the line is saved in the struct)
