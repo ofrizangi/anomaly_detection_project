@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 TimeSeries::TimeSeries(const char *fileName) {
     fstream readFile;
     readFile.open(fileName, ios::in);
@@ -107,11 +106,7 @@ int TimeSeries::getNumberOfLines() const{
     if(keys.empty()){
         return 0;
     }
-    return (int)this->table[keys[0]].size();
+    return (int)this->table.at(keys[0]).size();
 }
 
-
 TimeSeries::~TimeSeries() = default;
-
-
-
