@@ -9,7 +9,8 @@ using namespace std;
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
-float sumMembers(float *x, int size) {
+
+float sumMembers2(float *x, int size) {
     float sum = 0;
     //loop through floats and sum them
     for (int i = 0; i < size; i++) {
@@ -18,13 +19,13 @@ float sumMembers(float *x, int size) {
     return sum;
 }
 
-float avg(float *x, int size) {
-    float sum = sumMembers(x, size);
+float avg2(float *x, int size) {
+    float sum = sumMembers2(x, size);
     return sum / (float) size;
 }
 Line linear_reg2(float* x,float* y, int size) {
     float a = cov(x, y, size) / var(x, size);
-    float b = avg(y, size) - a * avg(x, size);
+    float b = avg2(y, size) - a * avg2(x, size);
     Line l(a, b);
     return l;
 }

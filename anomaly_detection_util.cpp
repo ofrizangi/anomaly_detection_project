@@ -115,7 +115,6 @@ float pearson(float *x, float *y, int size) {
     //calculate the deviation using variance
     float varX = var(x, size);
     float varY = var(y, size);
-    std::cout<< varX << " " << varY << std::endl;
     float deviation = sqrtf((varX * varY));
     //calculate pearson correlation
     float correlation = covariance / deviation;
