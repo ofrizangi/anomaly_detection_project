@@ -1,5 +1,3 @@
-#ifndef EX1_ANOMALYREPORT_H
-#define EX1_ANOMALYREPORT_H
 #include "TimeSeries.h"
 class AnomalyReport{
 public:
@@ -14,4 +12,3 @@ public:
     virtual vector<AnomalyReport> detect(const TimeSeries& ts)=0;
     virtual ~TimeSeriesAnomalyDetector(){}
 };
-#endif //EX1_ANOMALYREPORT_H

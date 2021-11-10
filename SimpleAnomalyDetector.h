@@ -1,6 +1,4 @@
-
-#ifndef EX1_SIMPLEANOMALYDETECTOR_H
-#define EX1_SIMPLEANOMALYDETECTOR_H
+#include "AnomalyReport.h"
 struct correlatedFeatures{
     string feature1,feature2; // names of the correlated features
     float correlation;
@@ -8,6 +6,8 @@ struct correlatedFeatures{
     float threshold;
 };
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
+private:
+    vector<AnomalyReport> NormalModel;
 public:
     SimpleAnomalyDetector();
     virtual ~SimpleAnomalyDetector();
@@ -15,4 +15,3 @@ public:
     virtual vector<AnomalyReport> detect(const TimeSeries& ts);
     vector<correlatedFeatures> getNormalModel();
 };
-#endif //EX1_SIMPLEANOMALYDETECTOR_H
