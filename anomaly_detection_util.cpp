@@ -170,3 +170,10 @@ float dev(Point p, Line l) {
     float yLinePoint = l.f(p.x);
     return fabsf(yLinePoint - p.y);
 }
+
+Line linear_reg2(float* x,float* y, int size) {
+    float a = cov(x, y, size) / var(x, size);
+    float b = avg(y, size) - a * avg(x, size);
+    Line l(a, b);
+    return l;
+}
