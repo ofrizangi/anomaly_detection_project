@@ -1,5 +1,3 @@
-
-
 #ifndef EX1_ANOMALYREPORT_H
 #define EX1_ANOMALYREPORT_H
 #include "TimeSeries.h"
