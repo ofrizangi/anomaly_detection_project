@@ -3,6 +3,7 @@
 #include <vector>
 #include "anomaly_detection_util.h"
 #include "TimeSeries.h"
+#include "SimpleAnomalyDetector.h"
 
 using namespace std;
 
@@ -28,3 +29,13 @@ using namespace std;
 //    return 0;
 //}
 
+int main(){
+    TimeSeries t("series.csv");
+    SimpleAnomalyDetector s;
+    s.learnNormal(t);
+    vector<correlatedFeatures> c = s.getNormalModel();
+    //vector<correlatedFeatures>:: iterator it;
+    //for(int it = c.begin(); it!=c.end();it++){
+
+    return 0;
+}

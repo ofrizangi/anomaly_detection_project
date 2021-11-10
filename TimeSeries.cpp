@@ -1,18 +1,15 @@
 #include <map>
 #include <vector>
 #include <iostream>
-#include <fstream>
 #include <string>
+#include "TimeSeries.h"
 
 using namespace std;
+//using namespace std::TimeSeries;
 
-class TimeSeries {
 
-    map<string, vector<float>> table;
 
-public:
-    //constructor
-    TimeSeries(const char * fileName) {
+    TimeSeries::TimeSeries(const char * fileName) {
         fstream readFile;
         readFile.open(fileName, ios::in);
         if (readFile.is_open()) {
@@ -42,10 +39,10 @@ public:
             }
         }
         readFile.close();
-    };
+    }
 
     // a help function for the constructor that splits a string by a specific char
-    vector<string> splitByTav(string s, char del) {
+    vector<string> TimeSeries:: splitByTav(string s, char del) {
         int start = 0;
         int end = s.find(del);
         vector<string> names;
@@ -60,7 +57,7 @@ public:
     }
 
     //returning all the features of the table
-    vector<string> getAllKeys() {
+    vector<string> TimeSeries:: getAllKeys() const {
         vector<string> newVector;
         for (auto element: this->table) {
             newVector.push_back(element.first);
@@ -77,7 +74,7 @@ public:
     }
 
     // printing all the table
-    void printTable() {
+    void TimeSeries:: printTable() {
         map<string, vector<float>>::iterator it;
         for (it = this->table.begin(); it != this->table.end(); it++) {
             cout << it->first << endl;
@@ -87,7 +84,7 @@ public:
 
     // returning the value of a feature i and time j
     //treating the time column as if it's always called 'Time' , but we have to find a way to recognize the column
-    float getValue(string feature, float time) {
+    float TimeSeries::getValue(string feature, float time) {
         vector<float>::iterator it;
         vector<float> times = this->table["Time"];
         int place = 0;
@@ -102,13 +99,19 @@ public:
         return values[place];
     }
 
-};
+
+    map<string, vector<float>> TimeSeries:: getTable() const{
+        return this->table;
+    }
 
 
-int main() {
-    TimeSeries s("series.csv");
-    cout << s.getValue("Heading" , 0.2) << endl;
-    s.printTable();
-    return 0;
-
-}
+//
+//
+//int main() {
+//    TimeSeries s("series.csv");
+//    cout << s.getValue("Heading" , 0.2) << endl;
+//    s.printTable();
+//    vector<float> f = s.getTable().find("Time");
+//    return 0;
+//
+//}
