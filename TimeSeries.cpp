@@ -12,7 +12,7 @@ class TimeSeries {
 
 public:
     //constructor
-    TimeSeries(string fileName) {
+    TimeSeries(const char * fileName) {
         fstream readFile;
         readFile.open(fileName, ios::in);
         if (readFile.is_open()) {
@@ -107,7 +107,8 @@ public:
 
 int main() {
     TimeSeries s("series.csv");
-    cout << s.getValue("Heading" , 0.2);
+    cout << s.getValue("Heading" , 0.2) << endl;
+    s.printTable();
     return 0;
 
 }
