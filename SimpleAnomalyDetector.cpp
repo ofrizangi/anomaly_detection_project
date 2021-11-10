@@ -1,3 +1,4 @@
+#include <iostream>
 #include "anomaly_detection_util.h"
 #include "SimpleAnomalyDetector.h"
 #include "TimeSeries.h"
@@ -8,7 +9,25 @@ using namespace std;
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
+float sumMembers(float *x, int size) {
+    float sum = 0;
+    //loop through floats and sum them
+    for (int i = 0; i < size; i++) {
+        sum += x[i];
+    }
+    return sum;
+}
 
+float avg(float *x, int size) {
+    float sum = sumMembers(x, size);
+    return sum / (float) size;
+}
+Line linear_reg2(float* x,float* y, int size) {
+    float a = cov(x, y, size) / var(x, size);
+    float b = avg(y, size) - a * avg(x, size);
+    Line l(a, b);
+    return l;
+}
 
 //this function creates a correlated features struct
 correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, float correlation, vector<float> v1,
@@ -19,23 +38,23 @@ correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, f
     newPair.corrlation = correlation;
     //to get linear reg we need to calculate the points and size
     //calculate size:
-    int sampleSize = (int) v1.size();
+    int sampleSize = v1.size();
     //points:
     //make array of points
-    Point *points;
+    vector<Point*> points(sampleSize);
     //create points and put them in the array
     for (int k = 0; k < sampleSize; k++) {
         Point p(v1[k], v2[k]);
-        points[k] = p;
+        points.push_back(&p);
     }
     //calculate linear_reg with the points and size
-    newPair.lin_reg = linear_reg(&points, sampleSize);
+    newPair.lin_reg = linear_reg2(&v1[0],&v2[0], sampleSize);
     //find threshold:
     //init max threshold to 0
     float maxDev = 0;
     //calculate deviation for every point from the linear_reg line and save the biggest deviation
     for (int k = 0; k < sampleSize; k++) {
-        float deviation = dev(points[k], newPair.lin_reg);
+        float deviation = dev(Point(v1[k],v2[k]), newPair.lin_reg);
         if (maxDev < deviation)
             maxDev = deviation;
     }
@@ -61,6 +80,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             vector<float> featureJValues = table[keys[j]];
             int sampleSize = (int) featureIValues.size();
             float correlation = pearson(&featureIValues[0], &featureJValues[0], sampleSize);
+            //cout << "pearson for:" << keys[i] << " " << keys[j] <<  " is:" << correlation << endl;
             //if pearson feature i and feature j > m
             if (maxCorrelation < correlation) {
                 //then m = pearson and col = j meaning we found a new max correlation
@@ -76,10 +96,10 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
         }
     }
 }
-
-
 /*now that we have the vector of correlated pairs and their max allowed deviation calculated
   we are ready for detect */
+
+
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     vector<AnomalyReport> reports;
     map<string, vector<float>> table = ts.getTable();

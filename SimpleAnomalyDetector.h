@@ -1,12 +1,12 @@
 #include "AnomalyDetector.h"
-
+#include "anomaly_detection_util.h"
 struct correlatedFeatures{
     string feature1,feature2; // names of the correlated features
     float corrlation;
     Line lin_reg;
     float threshold;
 };
-class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
+class SimpleAnomalyDetector: public TimeSeriesAnomalyDetector{
 private:
     vector<correlatedFeatures> normalModel;
 public:

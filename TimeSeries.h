@@ -15,7 +15,7 @@ public:
     TimeSeries(const char *fileName);
     map<string, vector<float>> getTable() const;
     vector<string> getAllKeys () const;
-    void printTable();
+    void printTable() ;
     int getNumberOfLines() const;
     ~TimeSeries();
 

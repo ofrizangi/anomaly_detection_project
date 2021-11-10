@@ -14,7 +14,7 @@ TimeSeries::TimeSeries(const char *fileName) {
         string names;
         getline(readFile, names);
         vector<string> properties = splitByTav(names, ',');
-        vector<float> arr[properties.size()];
+        vector<float> arr(properties.size());
 
         //making vectors for every feature
         vector<string>::iterator it;
@@ -23,7 +23,7 @@ TimeSeries::TimeSeries(const char *fileName) {
         while (getline(readFile, names)) {
             values = splitByTav(names, ',');
             for (it = values.begin(); it != values.end(); it++) {
-                arr[place].push_back(stof(*it));
+                arr.push_back(stof(*it));
                 place++;
             }
             place = 0;
@@ -31,7 +31,7 @@ TimeSeries::TimeSeries(const char *fileName) {
         // building the set
         place = 0;
         for (it = properties.begin(); it != properties.end(); it++) {
-            this->table.insert({*it, arr[place]});
+            this->table.insert({*it, arr});
             place++;
         }
     }
@@ -66,12 +66,13 @@ vector<string> TimeSeries::getAllKeys() const {
 void printVector(vector<float> t) {
     vector<float>::iterator it;
     for (it = t.begin(); it != t.end(); it++) {
-        cout << *it << endl;
+        cout << *it ;
     }
+    cout << endl;
 }
 
 // printing all the table
-void TimeSeries::printTable() {
+void  TimeSeries::printTable()  {
     map<string, vector<float>>::iterator it;
     for (it = this->table.begin(); it != this->table.end(); it++) {
         cout << it->first << endl;

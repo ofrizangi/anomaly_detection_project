@@ -10,6 +10,7 @@
 #include "anomaly_detection_util.h"
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 /**
 * Helper method to calculate the sum of variables.
@@ -114,6 +115,7 @@ float pearson(float *x, float *y, int size) {
     //calculate the deviation using variance
     float varX = var(x, size);
     float varY = var(y, size);
+    std::cout<< varX << " " << varY << std::endl;
     float deviation = sqrtf((varX * varY));
     //calculate pearson correlation
     float correlation = covariance / deviation;
@@ -132,8 +134,7 @@ Line linear_reg(Point **points, int size) {
         throw std::invalid_argument("size must be positive");
     if (points == nullptr)
         throw std::invalid_argument("null pointer passed");
-    float x[size];
-    float y[size];
+    float x[sizeof(points)/sizeof(Point*)],y[sizeof(points)/sizeof(Point*)];
     for (int i = 0; i < size; i++) {
         x[i] = points[i]->x;
         y[i] = points[i]->y;
