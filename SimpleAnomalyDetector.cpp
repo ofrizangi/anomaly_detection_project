@@ -5,9 +5,9 @@
 using namespace std;
 
 
-    SimpleAnomalyDetector::SimpleAnomalyDetector()= default;
+SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
- SimpleAnomalyDetector::~SimpleAnomalyDetector(){
+SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 }
 
@@ -19,7 +19,7 @@ using namespace std;
 //    return arr;
 //}
 
-void SimpleAnomalyDetector:: learnNormal(const TimeSeries &ts) {
+void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
     //get number of features
     vector<string> keys = ts.getAllKeys();
     int n = keys.size();
@@ -33,9 +33,9 @@ void SimpleAnomalyDetector:: learnNormal(const TimeSeries &ts) {
         for (int j = i + 1; j < n; j++) {
             //calculate pearson between features i and j
 
-            vector<float> featureIValues  = table[keys[i]];
+            vector<float> featureIValues = table[keys[i]];
             vector<float> featureJValues = table[keys[j]];
-           // float * x = featureIValues;
+            // float * x = featureIValues;
             int sampleSize = featureIValues.size();
 
             float correlate = pearson(featureIValues, featureJValues, sampleSize);
@@ -62,10 +62,10 @@ void SimpleAnomalyDetector:: learnNormal(const TimeSeries &ts) {
             vector<float> feature1Values = table[keys[i]];
             vector<float> feature2Values = table[keys[column]];
             //make array of points
-            Point * points;
+            Point *points;
             //create points and put them in the array
             for (int k = 0; k < sampleSize; k++) {
-                Point * p = new Point(feature1Values[k], feature2Values[k]);
+                Point *p = new Point(feature1Values[k], feature2Values[k]);
                 points[k] = *p;
             }
             //calculate linear_reg with the points and size
@@ -74,7 +74,7 @@ void SimpleAnomalyDetector:: learnNormal(const TimeSeries &ts) {
             //init max threshold to 0
             float maxDev = 0;
             //calculate deviation for every point from the linear_reg line and save the biggest deviation
-            for (int k = 0; k < sampleSize; k++ ) {
+            for (int k = 0; k < sampleSize; k++) {
                 float d = dev(points[k], correlation.lin_reg);
                 if (maxDev < d)
                     maxDev = d;
@@ -90,30 +90,45 @@ void SimpleAnomalyDetector:: learnNormal(const TimeSeries &ts) {
 
 /*now that we have the vector of correlated pairs and their max allowed deviation calculated
   we are ready for detect */
- vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
+vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
+    vector<AnomalyReport> reports();
+    map<string, vector<float>> table = ts.getTable();
+    vector <string> keys = ts.getAllKeys();
 
- }
+    for(auto correlation : this->normalModel){
+
+    }
+    // the number of lines in the table
+    int numOfLines;
+
+    for(int i=0; i<numOfLines; i++){
+
+    }
+
+
+
+}
 //    //vector<AnomalyReport> reports =  new vector<AnomalyReport>();
 //    vector<float>::iterator it;
 
 
-    //vector<correlatedFeatures>::iterator it;
+//vector<correlatedFeatures>::iterator it;
 
-    //for(it = this.normalModel.begin; )
+//for(it = this.normalModel.begin; )
 
-    //for each line/timestamp in the time series
-    //for each pair of correlated features from learn normal(we need to save the vector,maybe as instance var?)
-    //take the data for feature 1 and feature 2 and make a point
-    //calculate the dev of the point from the linear_reg line of the pair(the line is saved in the struct)
-    //if the dev>max_dev then create anomaly report with the names of the features and time
-    //add the new report to the vector
-    //end of for each loop(both)
-    //return the vector with the reports
+//for each line/timestamp in the time series
+//for each pair of correlated features from learn normal(we need to save the vector,maybe as instance var?)
+//take the data for feature 1 and feature 2 and make a point
+//calculate the dev of the point from the linear_reg line of the pair(the line is saved in the struct)
+//if the dev>max_dev then create anomaly report with the names of the features and time
+//add the new report to the vector
+//end of for each loop(both)
+//return the vector with the reports
 //}
 
-vector<correlatedFeatures> SimpleAnomalyDetector::getNormalModel(){
+vector<correlatedFeatures> SimpleAnomalyDetector::getNormalModel() {
     return this->normalModel;
- }
+}
 
 
 
