@@ -1,6 +1,4 @@
-//
-// Created by Ofri on 10/14/2021.
-//
+
 
 #ifndef EX1_ANOMALY_DETECTION_UTIL_H
 #define EX1_ANOMALY_DETECTION_UTIL_H
@@ -10,7 +8,7 @@ float var(float* x, int size);
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size);
 // returns the Pearson correlation coefficient of X and Y
-float pearson(float* x, float* y, int size);
+float pearson(float * x, float* y, int size);
 class Line{
 public:
     float a,b;

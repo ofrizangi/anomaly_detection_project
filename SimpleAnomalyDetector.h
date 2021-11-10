@@ -1,7 +1,8 @@
-#include "AnomalyReport.h"
+#include "AnomalyDetector.h"
+
 struct correlatedFeatures{
     string feature1,feature2; // names of the correlated features
-    float correlation;
+    float corrlation;
     Line lin_reg;
     float threshold;
 };

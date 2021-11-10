@@ -1,4 +1,6 @@
 #include "TimeSeries.h"
+#include "anomaly_detection_util.h"
+
 class AnomalyReport{
 public:
     const string description;

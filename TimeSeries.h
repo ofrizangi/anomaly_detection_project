@@ -13,16 +13,15 @@ class TimeSeries {
 
 public:
     TimeSeries(const char *fileName);
-
     map<string, vector<float>> getTable() const;
-
     vector<string> getAllKeys () const;
     void printTable();
+    int getNumberOfLines() const;
+    ~TimeSeries();
 
-    float getValue(string feature, float time);
 
 private:
-    vector<string> splitByTav(string s, char del);
+    vector<string> splitByTav(const string & s, char del);
 
 
 };
