@@ -64,7 +64,6 @@ using namespace std;
         }
         return newVector;
     }
-
     // printing a single vector of values
     void printVector(vector<float> t) {
         vector<float>::iterator it;
