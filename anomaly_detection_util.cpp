@@ -1,16 +1,9 @@
-/**
- * @file anomaly_detection_util.cpp
- *
- * @brief this is the source file for anomaly_detection_util library
- * it's the timeSeriesProject for 89210 project.
- *
- * @author Ofri Zangi & Ben Plosk
- */
+//Ofri Zangi 207488305
+//Ben Plosk
 
 #include "anomaly_detection_util.h"
 #include <cmath>
 #include <stdexcept>
-#include <iostream>
 
 /**
 * Helper method to calculate the sum of variables.

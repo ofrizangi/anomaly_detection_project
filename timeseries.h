@@ -1,3 +1,6 @@
+//Ofri Zangi 207488305
+//Ben Plosk
+
 #include <vector>
 #include <map>
 #include <fstream>
@@ -19,10 +22,8 @@ public:
     int getNumberOfLines() const;
     ~TimeSeries();
 
-
 private:
     vector<string> splitByTav(const string & s, char del);
-
 
 };
 

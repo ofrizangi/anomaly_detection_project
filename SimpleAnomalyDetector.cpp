@@ -1,19 +1,35 @@
+//Ofri Zangi 207488305
+//Ben Plosk
+
 #include <iostream>
 #include "anomaly_detection_util.h"
 #include "SimpleAnomalyDetector.h"
 #include "timeseries.h"
 
 using namespace std;
-const float minAllowedCorrelation = 0.5;
+const float minAllowedCorrelation = 0.9;
 
+/**
+* Constructor.
+*/
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
+/**
+* Destructor.
+*/
 SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
 
 
-
-
-//this function creates a correlated features struct
+/**
+* This function creates a correlated features struct
+*
+* @param feature1 the first feature
+* @param feature2 the second feature
+* @param correlation the correlation between the features column
+* @param v1 the column of the first feature
+* @param v2 the column of the second feature
+* @return a correlatedFeatures object with all those details
+*/
 correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, float correlation, vector<float> v1,
                                              vector<float> v2) {
     correlatedFeatures newPair;
@@ -21,9 +37,7 @@ correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, f
     newPair.feature2 = feature2;
     newPair.corrlation = correlation;
     //to get linear reg we need to calculate the points and size
-    //calculate size:
     int sampleSize = v1.size();
-    //points:
     //make array of points
     vector<Point*> points(sampleSize);
     //create points and put them in the array
@@ -34,7 +48,6 @@ correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, f
     //calculate linear_reg with the points and size
     newPair.lin_reg = linear_reg2(&v1[0],&v2[0], sampleSize);
     //find threshold:
-    //init max threshold to 0
     float maxDev = 0;
     //calculate deviation for every point from the linear_reg line and save the biggest deviation
     for (int k = 0; k < sampleSize; k++) {
@@ -43,10 +56,16 @@ correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, f
             maxDev = deviation;
     }
     //max_dev *=1.1 for precision
-    newPair.threshold = maxDev * 1.2;
+    newPair.threshold = maxDev * (float )1.2;
     return newPair;
 }
 
+/**
+* This function learns the data the is given to it by calculating a vector of correlated pairs,
+* and their max allowed deviation.
+*
+* @param ts the data we want to learn
+*/
 void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
     //get number of features
     vector<string> keys = ts.getAllKeys();
@@ -57,14 +76,12 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
         //init m = 0 , col = -1
         float maxCorrelation = 0;
         int column = -1;
-        //inner loop for i+1 to n
         for (int j = i + 1; j < n; j++) {
             //calculate pearson between features i and j
             vector<float> featureIValues = table[keys[i]];
             vector<float> featureJValues = table[keys[j]];
             int sampleSize = (int) featureIValues.size();
             float correlation = pearson(&featureIValues[0], &featureJValues[0], sampleSize);
-            //cout << "pearson for:" << keys[i] << " " << keys[j] <<  " is:" << correlation << endl;
             //if pearson feature i and feature j > m
             if (maxCorrelation < correlation) {
                 //then m = pearson and col = j meaning we found a new max correlation
@@ -82,10 +99,13 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
         }
     }
 }
-/*now that we have the vector of correlated pairs and their max allowed deviation calculated
-  we are ready for detect */
 
 
+/**
+* Detecting exceptions from the new data we got by the normal data we calculated in function learnNormal
+*
+* @param ts the data we want to detect
+*/
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     vector<AnomalyReport> reports;
     map<string, vector<float>> table = ts.getTable();
@@ -112,11 +132,9 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     return reports;
 }
 
-
+/**
+@return the vector of all the correlated features.
+*/
 vector<correlatedFeatures> SimpleAnomalyDetector::getNormalModel() {
     return this->normalModel;
 }
-
-
-
-

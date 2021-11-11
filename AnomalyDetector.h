@@ -1,3 +1,5 @@
+
+
 #include "timeseries.h"
 #ifndef ANOMALYDETECTOR_H
 #define ANOMALYDETECTOR_H
