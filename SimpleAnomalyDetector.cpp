@@ -71,7 +71,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
                 maxCorrelation = correlation;
                 column = j;
             }
-        }//end of inner loop
+        }
         if (column != -1) { // found a correlation between feature i and feature j
             //save them in the struct if they proceed the threshold
             correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
@@ -91,15 +91,15 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
     int numOfLines = ts.getNumberOfLines();
     if (numOfLines != 0) {
         // going over all the lines in the table
-        for (int i = 0; i < numOfLines; i++) {
+        for (auto const &correlation: this->normalModel) {
+            vector<float> f1 = table[correlation.feature1];
+            vector<float> f2 = table[correlation.feature2];
             // for each line going over all the correlation columns
-            for (auto const &correlation: this->normalModel) {
-                vector<float> f1 = table[correlation.feature1];
-                vector<float> f2 = table[correlation.feature2];
+            for (int i = 0; i < numOfLines; i++) {
                 Point p(f1[i], f2[i]);
                 float numDev = dev(p, correlation.lin_reg);
                 if (numDev > correlation.threshold) {
-                    string description = correlation.feature1 + " , " + correlation.feature2;
+                    string description = correlation.feature1 + "-" + correlation.feature2;
                     int timeStep = i;
                     AnomalyReport anomalyReport(description, timeStep);
                     reports.push_back(anomalyReport);

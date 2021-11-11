@@ -16,7 +16,7 @@ TimeSeries::TimeSeries(const char *fileName) {
         vector<string> properties = splitByTav(names, ',');
 
         //an array that contains all the vectors, each place holds a vector
-        vector<float> arr[properties.size()];
+        vector<float> *arr = new vector<float>[properties.size()];
 
         //making vectors for every feature
         vector<string>::iterator it;
@@ -36,6 +36,7 @@ TimeSeries::TimeSeries(const char *fileName) {
             this->table.insert({*it, arr[place]});
             place++;
         }
+        delete[] arr;
     }
     readFile.close();
 }

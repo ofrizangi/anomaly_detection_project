@@ -16,7 +16,7 @@ void generateTrainCSV(float a1, float b1, float a2, float b2) {
     out << "A,B,C,D" << endl;
     Line ac(a1, b1);
     Line bd(a2, b2);
-    for (int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= 100; i++) {
         float a = i;
         float b = rand() % 40;
         out << a << "," << b << "," << ac.f(a) - 0.02 + (rand() % 40) / 100.0f << ","
@@ -30,7 +30,7 @@ void generateTestCSV(float a1, float b1, float a2, float b2, int anomaly) {
     out << "A,B,C,D" << endl;
     Line ac(a1, b1);
     Line bd(a2, b2);
-    for (int i = 1; i <= 5; i++) {
+    for (int i = 1; i <= 100; i++) {
         float a = i;
         float b = rand() % 40;
         if (i != anomaly)
