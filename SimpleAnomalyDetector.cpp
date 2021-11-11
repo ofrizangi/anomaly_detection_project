@@ -103,7 +103,6 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
                 if (numDev > correlation.threshold) {
                     string description = correlation.feature1 + "-" + correlation.feature2;
                     int timeStep = i+1;
-                    cout<< "deviation detected: " << numDev << " " << description << " in time: " <<timeStep << endl;
                     AnomalyReport anomalyReport(description, timeStep);
                     reports.push_back(anomalyReport);
                 }
