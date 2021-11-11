@@ -166,30 +166,6 @@ SimpleAnomalyDetector.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\SimpleAnomalyDetector.cpp.s
 .PHONY : SimpleAnomalyDetector.cpp.s
 
-TimeSeries.obj: TimeSeries.cpp.obj
-.PHONY : TimeSeries.obj
-
-# target to build an object file
-TimeSeries.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\TimeSeries.cpp.obj
-.PHONY : TimeSeries.cpp.obj
-
-TimeSeries.i: TimeSeries.cpp.i
-.PHONY : TimeSeries.i
-
-# target to preprocess a source file
-TimeSeries.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\TimeSeries.cpp.i
-.PHONY : TimeSeries.cpp.i
-
-TimeSeries.s: TimeSeries.cpp.s
-.PHONY : TimeSeries.s
-
-# target to generate assembly for a file
-TimeSeries.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\TimeSeries.cpp.s
-.PHONY : TimeSeries.cpp.s
-
 anomaly_detection_util.obj: anomaly_detection_util.cpp.obj
 .PHONY : anomaly_detection_util.obj
 
@@ -214,6 +190,30 @@ anomaly_detection_util.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\anomaly_detection_util.cpp.s
 .PHONY : anomaly_detection_util.cpp.s
 
+timeseries.obj: timeseries.cpp.obj
+.PHONY : timeseries.obj
+
+# target to build an object file
+timeseries.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\timeseries.cpp.obj
+.PHONY : timeseries.cpp.obj
+
+timeseries.i: timeseries.cpp.i
+.PHONY : timeseries.i
+
+# target to preprocess a source file
+timeseries.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\timeseries.cpp.i
+.PHONY : timeseries.cpp.i
+
+timeseries.s: timeseries.cpp.s
+.PHONY : timeseries.s
+
+# target to generate assembly for a file
+timeseries.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\project.dir\build.make /nologo -$(MAKEFLAGS) CMakeFiles\project.dir\timeseries.cpp.s
+.PHONY : timeseries.cpp.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -229,12 +229,12 @@ help:
 	@echo ... SimpleAnomalyDetector.obj
 	@echo ... SimpleAnomalyDetector.i
 	@echo ... SimpleAnomalyDetector.s
-	@echo ... TimeSeries.obj
-	@echo ... TimeSeries.i
-	@echo ... TimeSeries.s
 	@echo ... anomaly_detection_util.obj
 	@echo ... anomaly_detection_util.i
 	@echo ... anomaly_detection_util.s
+	@echo ... timeseries.obj
+	@echo ... timeseries.i
+	@echo ... timeseries.s
 .PHONY : help
 
 

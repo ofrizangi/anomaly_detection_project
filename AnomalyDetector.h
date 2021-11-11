@@ -1,4 +1,4 @@
-#include "TimeSeries.h"
+#include "timeseries.h"
 #ifndef ANOMALYDETECTOR_H
 #define ANOMALYDETECTOR_H
 class AnomalyReport{

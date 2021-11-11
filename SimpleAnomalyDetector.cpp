@@ -1,7 +1,7 @@
 #include <iostream>
 #include "anomaly_detection_util.h"
 #include "SimpleAnomalyDetector.h"
-#include "TimeSeries.h"
+#include "timeseries.h"
 
 using namespace std;
 

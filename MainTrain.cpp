@@ -71,6 +71,8 @@ int main(){
 
     generateTrainCSV(a1,b1,a2,b2);
     TimeSeries ts("trainFile1.csv");
+    cout << "this is the source of the problem, all columns have the same float vector" << endl;
+    ts.printTable();
     SimpleAnomalyDetector ad;
     ad.learnNormal(ts);
     vector<correlatedFeatures> cf=ad.getNormalModel();

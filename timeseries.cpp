@@ -2,7 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include "TimeSeries.h"
+#include "timeseries.h"
 
 using namespace std;
 
@@ -75,7 +75,7 @@ void printVector(vector<float> t) {
 void  TimeSeries::printTable()  {
     map<string, vector<float>>::iterator it;
     for (it = this->table.begin(); it != this->table.end(); it++) {
-        cout << it->first << endl;
+        cout << it->first <<":" << endl;
         printVector(it->second);
     }
 }
