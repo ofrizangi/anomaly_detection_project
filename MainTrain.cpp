@@ -87,14 +87,9 @@ int main() {
     // test the anomaly detector: (60 points)
     // one simply anomaly is injected to the data
     int anomaly = 5 + rand() % 90; // one anomaly injected in a random time step
-    cout << "the timestep of the anomaly is going to be: " << anomaly << endl;
     generateTestCSV(a1, b1, a2, b2, anomaly);
     TimeSeries ts2("testFile1.csv");
     vector<AnomalyReport> r = ad.detect(ts2);
-    cout << r[0].description <<endl;
-    for(int i=0;i<cf.size();i++) {
-        cout << "the allowed deviation for: " <<cf[i].feature1 << "-" << cf[i].feature2 <<" was: " << cf[i].threshold<< endl;
-    }
     bool anomlyDetected=false;
     int falseAlarms=0;
     std::for_each(r.begin(),r.end(),[&anomaly,&anomlyDetected,&falseAlarms](AnomalyReport ar){
