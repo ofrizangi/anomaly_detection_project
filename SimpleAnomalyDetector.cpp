@@ -4,7 +4,7 @@
 #include "timeseries.h"
 
 using namespace std;
-const float minAllowedCorrelation = 0.5;
+const float minAllowedCorrelation = 0.9;
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
