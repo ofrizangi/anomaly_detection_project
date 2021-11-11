@@ -4,7 +4,7 @@
 #include "timeseries.h"
 
 using namespace std;
-
+const float minAllowedCorrelation = 0.5;
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
@@ -43,7 +43,7 @@ correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, f
             maxDev = deviation;
     }
     //max_dev *=1.1 for precision
-    newPair.threshold = maxDev * (float) 1.1;
+    newPair.threshold = maxDev * 1.2;
     return newPair;
 }
 
@@ -73,10 +73,12 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             }
         }
         if (column != -1) { // found a correlation between feature i and feature j
-            //save them in the struct if they proceed the threshold
-            correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
-                                                                       table[keys[i]], table[keys[column]]);
-            this->normalModel.push_back(correlation);
+            if (abs(maxCorrelation) > minAllowedCorrelation) { //if the correlation between: i,j is strong enough
+                //save them in the struct if they proceed the threshold
+                correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
+                                                                           table[keys[i]], table[keys[column]]);
+                this->normalModel.push_back(correlation);
+            }
         }
     }
 }
@@ -100,7 +102,8 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
                 float numDev = dev(p, correlation.lin_reg);
                 if (numDev > correlation.threshold) {
                     string description = correlation.feature1 + "-" + correlation.feature2;
-                    int timeStep = i;
+                    int timeStep = i+1;
+                    cout<< "deviation detected: " << numDev << " " << description << " in time: " <<timeStep << endl;
                     AnomalyReport anomalyReport(description, timeStep);
                     reports.push_back(anomalyReport);
                 }
