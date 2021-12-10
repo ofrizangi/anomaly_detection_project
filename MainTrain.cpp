@@ -31,7 +31,6 @@ int main(){
 	float cy=-500+rand()%1001;
 	Point** ps=generate(Point(cx,cy),R,N);
 
-
 	// your working copy
 	Point** ps_copy=new Point*[N];
 	for(size_t i=0;i<N;i++)
@@ -40,7 +39,6 @@ int main(){
 	auto start = high_resolution_clock::now();
 	Circle c=findMinCircle(ps_copy,N);
 	auto stop = high_resolution_clock::now();
-
 
 	if((int)c.radius>(int)R)
 		cout<<"you need to find a minimal radius (-40)"<<endl;
