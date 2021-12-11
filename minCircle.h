@@ -23,6 +23,7 @@ public:
 // --------------------------------------
 
 Circle findMinCircle(Point** points,size_t size);
+bool isInsideCircle(const Circle& c,const Point& p);
 // you can add here additional methods
 
 #endif /* MINCIRCLE_H_ */

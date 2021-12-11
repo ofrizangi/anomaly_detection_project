@@ -9,6 +9,7 @@
 using namespace std;
 const float minAllowedCorrelation = 0.9;
 
+
 /**
 * Constructor.
 */
@@ -21,43 +22,16 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
 
 
 /**
-* This function creates a correlated features struct
-*
-* @param feature1 the first feature
-* @param feature2 the second feature
-* @param correlation the correlation between the features column
-* @param v1 the column of the first feature
-* @param v2 the column of the second feature
-* @return a correlatedFeatures object with all those details
+* Calls the function CorrelatedFeaturesCreator with the object function we want to set the correlated feature by
 */
-correlatedFeatures correlatedFeaturesCreator(string feature1, string feature2, float correlation, vector<float> v1,
-                                             vector<float> v2) {
-    correlatedFeatures newPair;
-    newPair.feature1 = feature1;
-    newPair.feature2 = feature2;
-    newPair.corrlation = correlation;
-    //to get linear reg we need to calculate the points and size
-    int sampleSize = v1.size();
-    //make array of points
-    vector<Point*> points(sampleSize);
-    //create points and put them in the array
-    for (int k = 0; k < sampleSize; k++) {
-        Point p(v1[k], v2[k]);
-        points.push_back(&p);
+void SimpleAnomalyDetector::callCorrelatedFeaturesCreator(float maxCorrelation, vector<string> keys,
+                                                          map<string, vector<float>> table, int i, int column) {
+    if (abs(maxCorrelation) >= minAllowedCorrelation) {
+        correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
+                                                                   table[keys[i]], table[keys[column]],
+                                                                   Regression());
+        this->normalModel.push_back(correlation);
     }
-    //calculate linear_reg with the points and size
-    newPair.lin_reg = linear_reg2(&v1[0],&v2[0], sampleSize);
-    //find threshold:
-    float maxDev = 0;
-    //calculate deviation for every point from the linear_reg line and save the biggest deviation
-    for (int k = 0; k < sampleSize; k++) {
-        float deviation = dev(Point(v1[k],v2[k]), newPair.lin_reg);
-        if (maxDev < deviation)
-            maxDev = deviation;
-    }
-    //max_dev *=1.1 for precision
-    newPair.threshold = maxDev * (float )1.2;
-    return newPair;
 }
 
 /**
@@ -73,9 +47,8 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
     map<string, vector<float>> table = ts.getTable();
     //for i = 1 to number of features
     for (int i = 0; i < n; i++) {
-        //init m = 0 , col = -1
-        float maxCorrelation = 0;
         int column = -1;
+        float maxCorrelation = 0;
         for (int j = i + 1; j < n; j++) {
             //calculate pearson between features i and j
             vector<float> featureIValues = table[keys[i]];
@@ -90,16 +63,14 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
             }
         }
         if (column != -1) { // found a correlation between feature i and feature j
-            if (abs(maxCorrelation) > minAllowedCorrelation) { //if the correlation between: i,j is strong enough
-                //save them in the struct if they proceed the threshold
-                correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
-                                                                           table[keys[i]], table[keys[column]]);
-                this->normalModel.push_back(correlation);
-            }
+            callCorrelatedFeaturesCreator(maxCorrelation, keys, table, i, column);
         }
     }
 }
 
+bool SimpleAnomalyDetector::callDetectBy(correlatedFeatures correlation, Point p) {
+    return IfDetectBy(detectByRegression(), correlation, p);
+}
 
 /**
 * Detecting exceptions from the new data we got by the normal data we calculated in function learnNormal
@@ -119,10 +90,9 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries &ts) {
             // for each line going over all the correlation columns
             for (int i = 0; i < numOfLines; i++) {
                 Point p(f1[i], f2[i]);
-                float numDev = dev(p, correlation.lin_reg);
-                if (numDev > correlation.threshold) {
+                if (callDetectBy(correlation, p)){
                     string description = correlation.feature1 + "-" + correlation.feature2;
-                    int timeStep = i+1;
+                    int timeStep = i + 1;
                     AnomalyReport anomalyReport(description, timeStep);
                     reports.push_back(anomalyReport);
                 }

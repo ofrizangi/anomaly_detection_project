@@ -50,7 +50,6 @@ Circle circleFrom3Points(const Point& p1,const Point& p2,const Point& p3) {
 //helper method for the welzl algorithm, it's the returned value on the stopping condition
 //it uses the methods for 2,3 point circles
 Circle trivialCircle(Point** points,int size) {
-
     if (size == 1) {
         return {*points[0], 0};
     }
