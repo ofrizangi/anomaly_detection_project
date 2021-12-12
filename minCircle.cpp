@@ -1,5 +1,6 @@
 //Ofri Zangi 207488305
 //Ben Plosk 208290833
+
 #include "minCircle.h"
 //a simple method to calc distance between two points on a 2-D plane
 float distance(const Point& p1,const Point& p2) {

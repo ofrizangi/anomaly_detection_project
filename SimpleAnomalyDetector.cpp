@@ -68,8 +68,11 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries &ts) {
     }
 }
 
+/**
+* Calls the function detect by with the object function we want to detect with
+*/
 bool SimpleAnomalyDetector::callDetectBy(correlatedFeatures correlation, Point p) {
-    return IfDetectBy(detectByRegression(), correlation, p);
+    return IfDeviationBy(detectByRegression(), correlation, p);
 }
 
 /**

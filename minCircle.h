@@ -1,3 +1,5 @@
+//Ofri Zangi 207488305
+//Ben Plosk 208290833
 
 #ifndef MINCIRCLE_H_
 #define MINCIRCLE_H_
@@ -24,6 +26,5 @@ public:
 
 Circle findMinCircle(Point** points,size_t size);
 bool isInsideCircle(const Circle& c,const Point& p);
-// you can add here additional methods
 
 #endif /* MINCIRCLE_H_ */

@@ -64,8 +64,12 @@ public:
         }
         float maxDev = f(&newPair, points, sampleSize);
         //max_dev *=1.1 for precision
-        newPair.threshold = maxDev * (float) 1.11;
-        newPair.min_circle.radius *= 1.11;
+        newPair.threshold = maxDev * (float) 1.1;
+        newPair.min_circle.radius *= (float) 1.1;
+
+        for (int k = 0; k < sampleSize; k++) {
+            delete points[k];
+        }
         return newPair;
     }
 
@@ -73,7 +77,7 @@ public:
     * This function returns TRUE if there is a deviation of the point p
     */
     template<class Tfunc2>
-    bool IfDetectBy(Tfunc2 f, correlatedFeatures correlation, Point p) {
+    bool IfDeviationBy(Tfunc2 f, correlatedFeatures correlation, Point p) {
         if (f(correlation, p)) {
             return true;
         }

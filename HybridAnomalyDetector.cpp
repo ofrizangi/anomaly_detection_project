@@ -3,6 +3,9 @@
 
 #include "HybridAnomalyDetector.h"
 
+/**
+* Constructor.
+*/
 HybridAnomalyDetector::HybridAnomalyDetector() = default;
 
 /**
@@ -29,8 +32,11 @@ void HybridAnomalyDetector::callCorrelatedFeaturesCreator(float maxCorrelation, 
 */
 bool HybridAnomalyDetector::callDetectBy(correlatedFeatures correlation, Point p) {
     if (correlation.min_circle.radius == 0)
-        return IfDetectBy(detectByRegression(), correlation, p);
-    return IfDetectBy(detectByCircleRadius(), correlation, p);
+        return IfDeviationBy(detectByRegression(), correlation, p);
+    return IfDeviationBy(detectByCircleRadius(), correlation, p);
 }
 
+/**
+* Destructor.
+*/
 HybridAnomalyDetector::~HybridAnomalyDetector() = default;
