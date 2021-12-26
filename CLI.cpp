@@ -7,45 +7,38 @@
 
 CLI::CLI(DefaultIO *dio) {
     this->dio = dio;
-    this->commands = new Command *[5];
-    this->commands[0] = new UploadCommand(dio, "1. upload a time series csv file");
-    this->commands[1] = new AlgorithmSettingsCommand(dio, "2. algorithm settings");
-    this->commands[2] = new DetectAnomalyCommand(dio, "3. detect anomalies");
-    this->commands[3] = new DisplayResultsCommand(dio, "4. display results");
-    this->commands[4] = new AnalyzeAnomaliesCommand(dio, "5. upload anomalies and analyze results");
-    this->numOfCommands = 5;
-    this->mediator = new Mediator(this->commands[0], this->commands[1], this->commands[2], this->commands[3],
-                                  this->commands[4]);
+    Command* c1 = new UploadCommand(dio);
+    Command* c2 = new AlgorithmSettingsCommand(dio);
+    Command* c3 = new DetectAnomalyCommand(dio);
+    Command* c4 = new DisplayResultsCommand(dio);
+    Command* c5 = new AnalyzeAnomaliesCommand(dio);
+
+    this->mediator = new CommandArrayMediator(HybridAnomalyDetector(), TimeSeries(),TimeSeries() ,
+                                              vector<AnomalyReport>(),c1,c2,c3,c4,c5);
+    for(int i =0;i<this->mediator->getSize() ;i++) {
+        this->mediator->getArray()[i]->setMediator(this->mediator);
+    }
 }
 
 
 void CLI::start() {
-    cout << "Welcome to the Anomaly Detection Server." << "\n" << "Please choose an option:" << "\n";
-    for (int i = 0; i < this->numOfCommands; i++) {
-        cout << commands[i]->getDescription() << "\n";
+    dio->write("Welcome to the Anomaly Detection Server.\n");
+    dio->write("Please choose an option:\n");
+    for(int i =0;i<this->mediator->getSize() ;i++) {
+        dio->write(i+1);
+        dio->write(".");
+        dio->write(this->mediator->getArray()[i]->getDescription());
+        dio->write("\n");
     }
-    int choice;
-    cin >> choice;
-    while (choice != 6) {
-        switch (choice) {
-            case 1:
-                commands[0]->execute();
-                mediator->changeTableState(commands[0]->getTrainTable(), commands[0]->getTestTable());
-            case 3:
-                commands[2]->execute();
-                mediator->changeReportsState(commands[2]->getReports());
-            case 4:
-                commands[3]->execute();
-        }
-        cin >> choice;
+    float choice ;
+    dio->read(&choice);
+    while (choice <=6 && choice>=1) {
+        this->mediator->getArray()[(int)choice-1]->execute();
+        dio->read(&choice);
     }
-
 }
 
 CLI::~CLI() {
     delete dio;
-    for (int i = 0; i < this->numOfCommands; i++) {
-        delete commands[i];
-    }
-    delete commands;
+    delete mediator;
 }

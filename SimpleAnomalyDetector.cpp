@@ -7,13 +7,12 @@
 #include "timeseries.h"
 
 using namespace std;
-const float minAllowedCorrelation = 0.9;
 
 
 /**
 * Constructor.
 */
-SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
+SimpleAnomalyDetector::SimpleAnomalyDetector() {threshold = 0.9;};
 
 /**
 * Destructor.
@@ -26,7 +25,7 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
 */
 void SimpleAnomalyDetector::callCorrelatedFeaturesCreator(float maxCorrelation, vector<string> keys,
                                                           map<string, vector<float>> table, int i, int column) {
-    if (abs(maxCorrelation) >= minAllowedCorrelation) {
+    if (abs(maxCorrelation) >= this->threshold) {
         correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
                                                                    table[keys[i]], table[keys[column]],
                                                                    Regression());

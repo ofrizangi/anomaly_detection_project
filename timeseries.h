@@ -15,6 +15,7 @@ class TimeSeries {
     map<string, vector<float>> table;
 
 public:
+    TimeSeries() = default;
     TimeSeries(const char *fileName);
     map<string, vector<float>> getTable() const;
     vector<string> getAllKeys () const;

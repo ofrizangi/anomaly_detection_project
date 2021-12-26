@@ -13,13 +13,13 @@ HybridAnomalyDetector::HybridAnomalyDetector() = default;
 */
 void HybridAnomalyDetector::callCorrelatedFeaturesCreator(float maxCorrelation, vector<string> keys,
                                                           map<string, vector<float>> table, int i, int column) {
-    if (abs(maxCorrelation) >= 0.9){
+    if (abs(maxCorrelation) >= this->threshold){
         correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
                                                                    table[keys[i]], table[keys[column]],
                                                                    Regression());
         this->normalModel.push_back(correlation);
     }
-    else if (abs(maxCorrelation) >= 0.5){
+    else if (abs(maxCorrelation) >= 0.5 ){
         correlatedFeatures correlation = correlatedFeaturesCreator(keys[i], keys[column], maxCorrelation,
                                                                    table[keys[i]], table[keys[column]],
                                                                    CircleRadius());

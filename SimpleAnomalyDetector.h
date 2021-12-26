@@ -18,6 +18,7 @@ struct correlatedFeatures {
 class SimpleAnomalyDetector : public TimeSeriesAnomalyDetector {
 
 protected:
+    float threshold;
     vector<correlatedFeatures> normalModel;
 
     struct Regression {
@@ -45,6 +46,17 @@ protected:
     };
 
 public:
+    float getThreshold() {
+        return this->threshold;
+    }
+
+    void setThreshold(float newThreshold) {
+        if(newThreshold < 1 && newThreshold > 0)
+            this->threshold = newThreshold;
+        else
+            cout << "please choose a value between 0 and 1." << endl;
+
+    }
 
     /**
     * This function creates a correlated features struct
@@ -56,10 +68,11 @@ public:
         struct correlatedFeatures newPair =
                 {feature1, feature2, correlation, linear_reg2(&v1[0], &v2[0], sampleSize), 0,
                  Circle(Point(0, 0), 0)};
-        Point *points[v1.size()];
+
+        Point** points = new Point*[v1.size()];
         //create points and put them in the array
         for (int k = 0; k < sampleSize; k++) {
-            auto *p = new Point(v1[k], v2[k]);
+            Point* p = new Point(v1[k], v2[k]);
             points[k] = p;
         }
         float maxDev = f(&newPair, points, sampleSize);

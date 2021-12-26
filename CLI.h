@@ -10,10 +10,7 @@ using namespace std;
 
 class CLI {
     DefaultIO* dio;
-    Command ** commands;
-    int numOfCommands;
-    Mediator * mediator;
-    // you can add data members
+    CommandArrayMediator* mediator;
 public:
     CLI(DefaultIO* dio);
     void start();
