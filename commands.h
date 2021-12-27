@@ -8,8 +8,34 @@
 #include <fstream>
 #include <vector>
 #include "HybridAnomalyDetector.h"
+#include <iomanip>
 
 using namespace std;
+
+class RangePair {
+    long start;
+    long finish;
+public:
+    RangePair() {this->start =0; this->finish = 0;}
+    RangePair(long x,long y)  {this->start = x; this->finish = y;}
+    void setStart(long newStart) {this->start = newStart;}
+    void setFinish(long newFinish) {this->finish = newFinish;}
+    long getStart() {return this->start;}
+    long getFinish() {return this->finish;}
+    bool Intersection(RangePair other) {
+        if((this->getStart() <= other.getFinish() &&
+            this->getFinish() >= other.getFinish() )||
+            (this->getFinish() >= other.getStart() &&
+            this->getFinish() <= other.getFinish())||
+           (this->getStart() >= other.getStart() &&
+            this->getFinish() <= other.getFinish() ) ||
+           (this->getStart() <= other.getStart() &&
+            this->getFinish() >= other.getFinish()))
+            return true;
+        else
+            return false;
+    }
+};
 
 class DefaultIO {
 public:
@@ -155,10 +181,13 @@ public:
     virtual void execute(){
         dio->write("The current correlation threshold is ");
         dio->write(this->mediator->getDetector().getThreshold());
-        dio->write('\n');
+        dio->write("\n");
         float f = 0;
+        dio->write("type a new threshold\n");
         dio->read(&f);
-        this->mediator->getDetector().setThreshold(f);
+        HybridAnomalyDetector h = this->mediator->getDetector();
+        h.setThreshold(f);
+        this->mediator->update(h);
     }
 };
 
@@ -166,8 +195,9 @@ class DetectAnomalyCommand : public Command{
 public:
     DetectAnomalyCommand(DefaultIO * dio) : Command(dio) {this->description = "detect anomalies";};
     virtual void execute(){
-        this->mediator->getDetector().learnNormal(this->mediator->getTrainTable());
-        vector<AnomalyReport> reports = this->mediator->getDetector().detect( (this->mediator->getTestTable()) );
+        HybridAnomalyDetector h = this->mediator->getDetector();
+        h.learnNormal(this->mediator->getTrainTable());
+        vector<AnomalyReport> reports = h.detect( (this->mediator->getTestTable()) );
         dio->write("anomaly detection complete.\n");
         this->mediator->update(reports);
     }
@@ -193,6 +223,7 @@ public:
         dio->write("Please upload your local anomalies file.\n");
         //dio->downloadFile("Anomalies.csv");
         vector<int> Anomalies = vector<int>();
+        vector<RangePair> anomaly_ranges = vector<RangePair>();
         int anomalyLines = 0;
         string s = dio->read();
         while (s != "done") {
@@ -208,6 +239,9 @@ public:
             for(int i = numStart ; i<=numEnd ; i++) {
                 Anomalies.push_back(i);
             }
+            RangePair pair = RangePair(numStart,numEnd);
+            anomaly_ranges.push_back(pair);
+            //push range to range vector
             //read next line
             s = dio->read();
         }
@@ -228,38 +262,80 @@ public:
         for(AnomalyReport report : this->mediator->getReports()) {
             report_ranges[report.description].push_back(report.timeStep);
         }
+        vector<RangePair> all_ranges = vector<RangePair>();
         //for each vector take the subsequent times and make a range of them
-        for(AnomalyReport report : this->mediator->getReports()) {
-            for(int i=0 ; i<report_ranges[report.description].size()-1;i++) {
-                if(report_ranges[report.description][i+1] - report_ranges[report.description][i] == 1 )
+        for(auto const& report : report_ranges) {
+            string description = report.first;
+            RangePair currentPair = RangePair(report.second[0],report.second[0]);
+            for(int i=0 ; i<report.second.size()-1;i++) {
+                if(report.second[i+1] - report.second[i] == 1 ) {
+                    currentPair.setFinish(report.second[i+1]);
+                }
+                else {
+                    all_ranges.push_back(currentPair);
+                    currentPair = RangePair(report.second[i+1],report.second[i+1]);
+                }
+                if(i+1 == report.second.size()-1)
+                    all_ranges.push_back(currentPair);
             }
         }
-
-        //for each such range, if it matches with number in anomalies vector TP++
-        //if not FP++
+        int falsePositive = 0, truePositive = 0;
+        //for each such range, if it matches with number in anomalies vector TP++ ,if not FP++
+        for(RangePair trueAnomaly : anomaly_ranges) {
+             for(RangePair anomalyDetected : all_ranges){
+                if(trueAnomaly.Intersection(anomalyDetected) == true ) {
+                    truePositive++;
+                    break;
+                }
+            }
+        }
+        for(RangePair anomalyDetected : all_ranges) {
+            bool flag = true;
+            for(RangePair trueAnomaly : anomaly_ranges){
+                if(anomalyDetected.Intersection(trueAnomaly) == true) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag == true)
+                falsePositive++;
+        }
 
         //calculate rates
-        //false alarm rate = FP/positiveLines
-        //true positive rate = TP/anomalyLines
+        float truePositiveRate = (float)truePositive/anomalyLines;
+        float falseAlarmRate = (float)falsePositive/positiveLines;
+        //round up to 3 digits after decimal
+        truePositiveRate*=1000;
+        falseAlarmRate*=1000;
+        int truePositiveRate2 =truePositiveRate;
+        int falseAlarmRate2 = falseAlarmRate;
+        truePositiveRate = (float)truePositiveRate2/1000;
+        falseAlarmRate = (float)falseAlarmRate2/1000;
         //write rates
+        dio->write("True Positive Rate: ");
+        dio->write(truePositiveRate);
+        dio->write("\n");
+        dio->write("False Positive Rate: ");
+        dio->write(falseAlarmRate);
+        dio->write("\n");
     }
 };
 
 class CommandArrayMediator : public CommandMediator {
-    Command** commands;
-    int size;
+//    Command** commands = nullptr;
+//    int size = 0;
 public:
     CommandArrayMediator(HybridAnomalyDetector detector,TimeSeries trainTable,TimeSeries testTable,
-                         vector<AnomalyReport> reports,Command * commandUpload, Command * commandSettings,
-                         Command * commandDetect,Command * commandResults ,Command * commandAnalyze) :
-            CommandMediator(detector,trainTable,testTable,reports){
-        this->commands = new Command*[5];
-        this->commands[0] = commandUpload;
-        this->commands[1] = commandSettings;
-        this->commands[2] = commandDetect;
-        this->commands[3] = commandResults;
-        this->commands[4] = commandAnalyze;
-        this->size = 5;
+                         vector<AnomalyReport> reports) :
+            CommandMediator(detector,trainTable,testTable,reports)
+            {
+//            this->commands = new Command*[5];
+//            this->commands[0] = commandUpload;
+//            this->commands[1] = commandSettings;
+//            this->commands[2] = commandDetect;
+//            this->commands[3] = commandResults;
+//            this->commands[4] = commandAnalyze;
+//            this->size = 5;
     }
 
     void update(HybridAnomalyDetector detector){
@@ -272,17 +348,17 @@ public:
     void update(vector<AnomalyReport> reports){
         this->reports = reports;
     }
-    Command** getArray() {
-        return this->commands;
-    }
-    int getSize() {
-        return this->size;
-    }
+//    Command** getArray() {
+//        return this->commands;
+//    }
+//    int getSize() {
+//        return this->size;
+//    }
     ~CommandArrayMediator(){
-        delete &(this->detector);
-        delete &(this->trainTable);
-        delete &(this->testTable);
-        delete &(this->reports);
+//        delete &(this->detector);
+//        delete &(this->trainTable);
+//        delete &(this->testTable);
+//        delete &(this->reports);
     };
 };
 

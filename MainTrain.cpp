@@ -56,8 +56,8 @@ void check(string outputFile,string expectedOutputFile){
 	size_t i=1,j=0;
 	string lst,lex;
 	while(!st.eof() && !ex.eof()){
-		//getline(st,lst);
-		//getline(ex,lex);
+		getline(st,lst);
+		getline(ex,lex);
 		if(i<13 && lst.compare(lex)!=0){ // 12
 			cout<<"line "<<i<<" expected: "<<lex<<" you got "<<lst<<endl;
 			cout<<"wrong output (-1)"<<endl;
@@ -86,10 +86,6 @@ int main(){
 	check("output.txt","expectedOutput.txt");
 	cout<<"done"<<endl;
 	return 0;
-//     TimeSeries ts("anomalyTrain.csv");
-//     TimeSeries* tsp = &ts;
-//     SimpleAnomalyDetector* ad = new SimpleAnomalyDetector();
-//     ad->learnNormal(ts);
 
 
 }

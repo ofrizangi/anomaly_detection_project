@@ -10,10 +10,13 @@ using namespace std;
 
 class CLI {
     DefaultIO* dio;
-    CommandArrayMediator* mediator;
+    Command ** commands = nullptr;
+    int size = 0;
+//    CommandArrayMediator mediator;
 public:
     CLI(DefaultIO* dio);
     void start();
+    void printMenu();
     virtual ~CLI();
 };
 
