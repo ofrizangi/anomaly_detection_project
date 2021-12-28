@@ -25,7 +25,7 @@ public:
     bool Intersection(RangePair other) {
         if((this->getStart() <= other.getFinish() &&
             this->getFinish() >= other.getFinish() )||
-            (this->getFinish() >= other.getStart() &&
+           (this->getFinish() >= other.getStart() &&
             this->getFinish() <= other.getFinish())||
            (this->getStart() >= other.getStart() &&
             this->getFinish() <= other.getFinish() ) ||
@@ -62,31 +62,6 @@ public:
         trainFile.close();
         write("Upload complete.\n");
     }
-
-    // you may add additional methods here
-};
-
-
-// need this???????????
-class StandardIO : public DefaultIO {
-
-    virtual string read() {
-        string s;
-        cin >> s;
-        return s;
-    }
-
-    virtual void write(string text) {
-        cout << text;
-    }
-
-    virtual void write(float f) {
-        cout << f;
-    }
-
-    virtual void read(float *f) {
-        cin >> *f;
-    }
 };
 
 class Command;
@@ -99,12 +74,19 @@ protected:
     vector<AnomalyReport> reports ;
 public:
     CommandMediator(HybridAnomalyDetector detector,TimeSeries trainTable,TimeSeries testTable,vector<AnomalyReport> reports) :
-    detector(detector) , trainTable(trainTable), testTable(testTable) ,reports(reports) {};
+            detector(detector) , trainTable(trainTable), testTable(testTable) ,reports(reports) {};
 
 
-    virtual void update(HybridAnomalyDetector detector) = 0;
-    virtual void update(TimeSeries trainTable,TimeSeries testTable) = 0;
-    virtual void update(vector<AnomalyReport> reports) = 0;
+    void update(HybridAnomalyDetector detector){
+        this->detector = detector;
+    }
+    void update(TimeSeries trainTable,TimeSeries testTable){
+        this->trainTable = trainTable;
+        this->testTable = testTable;
+    }
+    void update(vector<AnomalyReport> reports){
+        this->reports = reports;
+    }
     HybridAnomalyDetector getDetector() {
         return this->detector;
     }
@@ -133,26 +115,7 @@ public:
     void setMediator(CommandMediator* mediator){
         this->mediator = mediator;
     }
-    /*void setTableState(const TimeSeries & trainTable, const TimeSeries & testTable) {
-        this->testTable = testTable;
-        this->trainTable = trainTable;
-    }
-    void setReportsState(const vector<AnomalyReport> & report){
-        this->reports.clear();
-        for ( auto const &item:report){
-            this->reports.push_back(item);
-        }
-    }
-    TimeSeries getTestTable(){
-        return this->testTable;
-    }
-    TimeSeries getTrainTable(){
-        return this->trainTable;
-    }
-     vector<AnomalyReport> getReports(){
-        return this->reports;
-    }
-     */
+
     string getDescription(){
         return this->description;
     }
@@ -183,7 +146,7 @@ public:
         dio->write(this->mediator->getDetector().getThreshold());
         dio->write("\n");
         float f = 0;
-        dio->write("type a new threshold\n");
+        dio->write("Type a new threshold\n");
         dio->read(&f);
         HybridAnomalyDetector h = this->mediator->getDetector();
         h.setThreshold(f);
@@ -282,7 +245,7 @@ public:
         int falsePositive = 0, truePositive = 0;
         //for each such range, if it matches with number in anomalies vector TP++ ,if not FP++
         for(RangePair trueAnomaly : anomaly_ranges) {
-             for(RangePair anomalyDetected : all_ranges){
+            for(RangePair anomalyDetected : all_ranges){
                 if(trueAnomaly.Intersection(anomalyDetected) == true ) {
                     truePositive++;
                     break;
@@ -321,61 +284,4 @@ public:
     }
 };
 
-class CommandArrayMediator : public CommandMediator {
-//    Command** commands = nullptr;
-//    int size = 0;
-public:
-    CommandArrayMediator(HybridAnomalyDetector detector,TimeSeries trainTable,TimeSeries testTable,
-                         vector<AnomalyReport> reports) :
-            CommandMediator(detector,trainTable,testTable,reports)
-            {
-//            this->commands = new Command*[5];
-//            this->commands[0] = commandUpload;
-//            this->commands[1] = commandSettings;
-//            this->commands[2] = commandDetect;
-//            this->commands[3] = commandResults;
-//            this->commands[4] = commandAnalyze;
-//            this->size = 5;
-    }
-
-    void update(HybridAnomalyDetector detector){
-        this->detector = detector;
-    }
-    void update(TimeSeries trainTable,TimeSeries testTable){
-        this->trainTable = trainTable;
-        this->testTable = testTable;
-    }
-    void update(vector<AnomalyReport> reports){
-        this->reports = reports;
-    }
-//    Command** getArray() {
-//        return this->commands;
-//    }
-//    int getSize() {
-//        return this->size;
-//    }
-    ~CommandArrayMediator(){
-//        delete &(this->detector);
-//        delete &(this->trainTable);
-//        delete &(this->testTable);
-//        delete &(this->reports);
-    };
-};
-
 #endif /* COMMANDS_H_ */
-/*
-
-void changeTableState(const TimeSeries & table1, const TimeSeries & table2) {
-    for (int i=0; i< this->numOfCommands; i++){
-        this->commands[i]->setTableState(table1, table2);
-    }
-}
-void changeReportsState(const vector<AnomalyReport> & r){
-    for (int i=0; i< this->numOfCommands; i++){
-        this->commands[i]->setReportsState(r);
-    }
-}
-~Mediator() {
-    delete commands;
-}
-*/
