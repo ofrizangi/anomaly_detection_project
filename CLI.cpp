@@ -45,7 +45,7 @@ void CLI::start() {
     HybridAnomalyDetector d = HybridAnomalyDetector();
     TimeSeries t1 = TimeSeries();
     TimeSeries t2 = TimeSeries();
-    vector<AnomalyReport> r =vector<AnomalyReport>();
+    vector<AnomalyReport>* r =new vector<AnomalyReport>();
     CommandMediator mediator = CommandMediator(d,t1,t2,r);
      for(int i=0;i<size;i++) {
          commands[i]->setMediator(&mediator);

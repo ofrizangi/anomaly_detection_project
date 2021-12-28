@@ -5,9 +5,9 @@
 #define ANOMALYDETECTOR_H
 class AnomalyReport{
 public:
-    string description;
-    long timeStep;
-    AnomalyReport(string description, long timeStep) : description(description){this->timeStep = timeStep;}
+    const string description;
+    const long timeStep;
+    AnomalyReport(const string description,const long timeStep) : description(description) , timeStep(timeStep){}
 };
 
 class TimeSeriesAnomalyDetector {

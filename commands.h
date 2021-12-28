@@ -71,9 +71,9 @@ protected:
     HybridAnomalyDetector detector ;
     TimeSeries trainTable ;
     TimeSeries testTable ;
-    vector<AnomalyReport> reports ;
+    vector<AnomalyReport>* reports ;
 public:
-    CommandMediator(HybridAnomalyDetector detector,TimeSeries trainTable,TimeSeries testTable,vector<AnomalyReport> reports) :
+    CommandMediator(HybridAnomalyDetector detector,TimeSeries trainTable,TimeSeries testTable,vector<AnomalyReport>* reports) :
             detector(detector) , trainTable(trainTable), testTable(testTable) ,reports(reports) {};
 
 
@@ -84,8 +84,10 @@ public:
         this->trainTable = trainTable;
         this->testTable = testTable;
     }
-    void update(vector<AnomalyReport> reports){
-        this->reports = reports;
+    void update(vector<AnomalyReport>* reports){
+        for(AnomalyReport report : *(reports) ) {
+            this->reports->push_back(report);
+        }
     }
     HybridAnomalyDetector getDetector() {
         return this->detector;
@@ -96,7 +98,7 @@ public:
     TimeSeries getTestTable() {
         return this->testTable;
     }
-    vector<AnomalyReport> getReports() {
+    vector<AnomalyReport>* getReports() {
         return this->reports;
     }
 };
@@ -162,7 +164,7 @@ public:
         h.learnNormal(this->mediator->getTrainTable());
         vector<AnomalyReport> reports = h.detect( (this->mediator->getTestTable()) );
         dio->write("anomaly detection complete.\n");
-        this->mediator->update(reports);
+        this->mediator->update(&reports);
     }
 };
 
@@ -170,7 +172,7 @@ class DisplayResultsCommand : public Command{
 public:
     DisplayResultsCommand(DefaultIO * dio) : Command(dio) {this->description = "display results";};
     virtual void execute(){
-        for (auto const &item: (this->mediator->getReports()) ){
+        for (auto const &item: *(this->mediator->getReports()) ){
             dio->write((float)item.timeStep);
             dio->write('\t' + item.description + '\n');
         }
@@ -218,11 +220,11 @@ public:
         //calc whole reports as ranges
         map<string,vector<long>> report_ranges = map<string,vector<long>>();
         //add all descriptions and create vectors for them
-        for(AnomalyReport report :this->mediator->getReports()) {
+        for(AnomalyReport report :*(this->mediator->getReports())) {
             report_ranges.insert({report.description,vector<long>()});
         }
-        //fill the vectors with the times
-        for(AnomalyReport report : this->mediator->getReports()) {
+//        fill the vectors with the times
+        for(AnomalyReport report : *(this->mediator->getReports()) ) {
             report_ranges[report.description].push_back(report.timeStep);
         }
         vector<RangePair> all_ranges = vector<RangePair>();

@@ -19,7 +19,7 @@ Please choose an option:
 5.upload anomalies and analyze results
 6.exit
 The current correlation threshold is 0.9
-type a new threshold
+Type a new threshold
 Welcome to the Anomaly Detection Server.
 Please choose an option:
 1.upload a time series csv file
