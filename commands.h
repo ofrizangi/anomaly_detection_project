@@ -1,3 +1,5 @@
+//Ofri Zangi 207488305
+//Ben Plosk 208290833
 
 #ifndef COMMANDS_H_
 #define COMMANDS_H_
@@ -9,6 +11,8 @@
 #include <vector>
 #include "HybridAnomalyDetector.h"
 #include <iomanip>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 using namespace std;
 
@@ -54,7 +58,7 @@ public:
         string s = read();
         trainFile << s;
         s = read();
-        while (s != "done") {
+        while (s != "done" && s != "done\r") {
             trainFile << "\n";
             trainFile << s;
             s = read();
@@ -63,6 +67,10 @@ public:
         write("Upload complete.\n");
     }
 };
+
+
+
+
 
 class Command;
 
