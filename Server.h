@@ -77,6 +77,16 @@ public:
 };
 
 
+class AnomalyDetectionHandler:public ClientHandler{
+public:
+    virtual void handle(int clientID){
+        SocketIO socketIo(clientID);
+        CLI cli(&socketIo);
+        cli.start();
+    }
+};
+
+
 
 
 // implement on Server.cpp

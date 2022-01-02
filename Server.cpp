@@ -5,6 +5,7 @@
 
 
 Server::Server(int port) throw(const char *) {
+    this->t = nullptr;
     this->my_addr.sin_family = AF_INET;
     this->my_addr.sin_port = htons(port);
     this->my_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
