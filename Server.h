@@ -91,6 +91,7 @@ public:
 
 // implement on Server.cpp
 class Server {
+    bool moreClients;
     int sock;
     struct sockaddr_in my_addr;
     thread* t; // the thread to run the start() method in

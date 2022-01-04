@@ -199,7 +199,7 @@ public:
         vector<RangePair> anomaly_ranges = vector<RangePair>();
         int anomalyLines = 0;
         string s = dio->read();
-        while (s != "done") {
+        while (s != "done" && s!="done\r") {
             anomalyLines++;
             //split s into start - finish
             int stringStart = 0;
