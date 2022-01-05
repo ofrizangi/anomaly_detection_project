@@ -1,9 +1,11 @@
+//Ofri Zangi 207488305
+//Ben Plosk 208290833
 
 #include "Server.h"
 #include <unistd.h>
 #include<signal.h>
 
-int gSignalStatus = 1;
+bool moreClients = true;
 
 Server::Server(int port) throw(const char *) {
     this->moreClients = true;
@@ -21,9 +23,10 @@ Server::Server(int port) throw(const char *) {
     listen(this->sock, 5);
 };
 
-void sig_handler(int signal) {
-    gSignalStatus = signal;
+void sig_handler(int sug) {
+    moreClients = false;
 }
+
 
 void Server::start(ClientHandler &ch) throw(const char *) {
     this->t = new thread([&ch, this]() {
@@ -31,16 +34,14 @@ void Server::start(ClientHandler &ch) throw(const char *) {
         struct sockaddr_in cli_addr;
         cli_addr.sin_family = AF_INET;
         socklen_t clilen = sizeof(cli_addr);
+        alarm(1);
         while (this->moreClients) {
-            alarm(2);
-            if(this->moreClients){
-                int newsockfd = accept(this->sock, (struct sockaddr *) &cli_addr, &clilen);
-                if (newsockfd < 0) {
-                    throw "failed accepting";
-                }
-                ch.handle(newsockfd);
-                close(newsockfd);
+            int newsockfd = accept(this->sock, (struct sockaddr *) &cli_addr, &clilen);
+            if (newsockfd < 0) {
+                throw "failed accepting";
             }
+            ch.handle(newsockfd);
+            close(newsockfd);
         }
         alarm(0);
     });
@@ -49,10 +50,9 @@ void Server::start(ClientHandler &ch) throw(const char *) {
 void Server::stop() {
     this->moreClients = false;
     close(this->sock);
+    sleep(1);
     this->t->join(); // do not delete this!
 }
 
-Server::~Server() {
-    delete this->t;
-}
 
+Server::~Server() = default;

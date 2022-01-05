@@ -285,11 +285,15 @@ public:
         truePositiveRate = (float)truePositiveRate2/1000;
         falseAlarmRate = (float)falseAlarmRate2/1000;
         //write rates
-        dio->write("True Positive Rate: ");
-        dio->write(truePositiveRate);
+        string true_str(to_string(truePositiveRate));
+        true_str.erase ( true_str.find_last_not_of('0') + 1, std::string::npos );
+        dio->write("True Positive Rate: " + true_str);
+       // dio->write(truePositiveRate);
         dio->write("\n");
-        dio->write("False Positive Rate: ");
-        dio->write(falseAlarmRate);
+        string false_str(to_string(falseAlarmRate));
+        false_str.erase ( false_str.find_last_not_of('0') + 1, std::string::npos );
+        dio->write("False Positive Rate: " + false_str);
+        //dio->write(falseAlarmRate);
         dio->write("\n");
     }
 };

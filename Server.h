@@ -1,3 +1,5 @@
+//Ofri Zangi 207488305
+//Ben Plosk 208290833
 
 
 #ifndef SERVER_H_
@@ -7,7 +9,6 @@
 #include "commands.h"
 #include "CLI.h"
 #include <sys/socket.h>
-#include <hash_map>
 
 using namespace std;
 
@@ -16,8 +17,6 @@ class ClientHandler{
 public:
     virtual void handle(int clientID)=0;
 };
-
-
 
 
 // you can add helper classes here and implement on the cpp file
@@ -54,26 +53,6 @@ public:
         recv(this->sock, buffer, 1024,0);
         f = buffer;
     }
-//    void bindSock(){
-//        bind(this->sock, (struct sockaddr*)&my_addr , sizeof (my_addr));
-//        listen(this->sock,5);
-//    }
-//    void acceptClient(struct sockaddr_in cli_addr){
-//        socklen_t clilen = sizeof (cli_addr);
-//        accept(this->sock, (struct sockaddr *) &cli_addr, &clilen);
-//    }
-//    void connectServer(struct sockaddr_in serv_addr){
-//        connect(this->sock ,(struct sockaddr *) &serv_addr, sizeof (serv_addr));
-//    }
-//    struct sockaddr_in get_sockaddr_in(){
-//        return this->my_addr;
-//    }
-//
-//    int getSock(){
-//        return this->sock;
-//    }
-
-
 };
 
 
@@ -85,9 +64,6 @@ public:
         cli.start();
     }
 };
-
-
-
 
 // implement on Server.cpp
 class Server {
